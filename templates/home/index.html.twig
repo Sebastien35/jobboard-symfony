@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('stylesheets/home.css') }}">
+<div class="spacer"><br></div>
+<div class="row">
+    <div class="col-1 d-none d-lg-block"></div>
+    <div class="col-12 col-lg-6 bg-grey mx-3 px-3 latest">
+        <h2>Les dernières offres d'emploi</h2>
+        {% for job in jobs %}
+            {% include 'base/jobCard.html.twig' with {'job': job} %}
+        {% endfor %}
+        </div>
+    <div class="col-3  d-none d-lg-block  ">
+        <div class="parlangage mb-5 right-items search">
+            <h2>Rechercher par langage : </h2>
+            <div class="d-flex justify-content-around">
+                <form >
+                    <input type="text" id="searchByLangageInput" placeholder="{{randomlangage}}">
+                    <button type="button" id="searchByLangageButton" class="btn btn-primary">Rechercher</button>
+                </form>
+            </div>
+        </div>
+        <div class="top-langages mt-5 bg-grey right-items">
+            <h2>Langages en vogue:</h2>
+            <div id="chartContainer">
+            </div>
+        </div>
+            
+    </div>
+
+
+</div>
+
+<script src="{{ asset('scripts/LangagesEnVogue.js') }}"></script>
+<script src="{{ asset('scripts/RechercheParLangage.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}

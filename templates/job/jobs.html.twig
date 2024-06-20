@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello JobController!{% endblock %}
+
+{% block body %}
+{% for job in jobs %}
+        {% include 'base/jobCard.html.twig' with {'job': job} %}
+{% endfor %}
+{% endblock %}

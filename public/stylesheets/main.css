@@ -1,0 +1,49 @@
+:root{
+    --primary : #415A77;
+    --secondary : #00b4ff;
+    --dark:  #1B263B;
+    --bg-dark:#0D1B2A;
+    --grey:#E0E1DD;
+    --active:#e09f1f;
+    --bs-link-hover-color: var(--active);  
+    --white: #fff;  
+}
+
+@font-face {
+    font-family: 'Lato-Bold';
+    src: url('/fonts/Lato-Bold.ttf');
+}
+
+h1, h2, h3, h4, h5, h6{
+    font-family: 'Lato-Bold';
+    color: var(--dark);
+}
+
+.couleur-dark{
+    background-color: var(--dark);
+}
+
+.bg-grey{
+    background-color: var(--grey);
+}
+
+.text-primary{
+    color: var(--primary);
+}
+
+.text-dark{
+    color: var(--dark);
+}
+
+.spacer{
+    min-height: 5dvh;
+    background-color: var(--white);
+}
+
+
+
+.scrollable-container {
+    height: 85vh; /* Adjust height as needed */
+    overflow-y: auto; /* Enable vertical scroll */
+}
+

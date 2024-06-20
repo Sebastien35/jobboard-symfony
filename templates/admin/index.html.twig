@@ -1,0 +1,168 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello AdminController!{% endblock %}
+
+{% block body %}
+<link rel="stylesheet" href="{{ asset('stylesheets/admin.css') }}">
+<nav class="navbar navbar-expand-lg font-dark">
+<div class="container-fluid">
+    <button class="navbar-toggler text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#AdminNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse d-flex justify-content-end d-none d-lg-block" id="AdminNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <btn class="nav-link userBtn" >Users</btn>
+            </li>
+            <li class="nav-item">
+                <btn class="nav-link jobBtn" >Jobs</btn>
+            </li>
+        </ul>
+    </div>
+</div> 
+</nav>  
+
+
+<div class="container d-none showHide" id="userContainer">
+    <div class="col-10 col-lg-6">
+        <h1>Users</h1>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Roles</th>
+                </tr>
+            </thead>
+            <tbody id="userTableBody">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="container d-none showHide" id="jobContainer">
+    <div class="row">
+        <div class="col-lg-5 col-12" >
+        <h2>Rechercher une offre : </h2>
+        <form id="jobSearchForm">
+            <div class="form-group">
+                <label for="langage">Langage</label>
+                <select class="form-control" id="LangageInput">
+                    <option value="">Tous les langages</option>
+                    {% for langage in differentsLangages %}
+                        <option value="{{langage}}">{{ langage }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="location">Localisation</label>
+                <select class="form-control" id="LocalisationInput" >
+                <option value="">Toutes les villes</option>
+                    {% for ville in differentesVilles %}
+                        <option value="{{ville}}">{{ ville }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="text-center">
+                <button type="button" class="btn btn-primary" id="searchJobsBtn">Rechercher</button>
+            </div>
+        </form>
+        <div class="space"><br></div>
+        <h2>Ajouter une offre :</h2>
+            <form id="jobAddForm">
+                <div class="form-group">
+                    <label for="titleInput">Titre</label>
+                    <input type="text" class="form-control" id="titleInput" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="locationInput">Localisation</label>
+                    <select class="form-control" id="locationInput" name="localisation" required>
+                        {% for ville in differentesVilles %}
+                            <option value="{{ ville }}">{{ ville }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="langageInput">Langage</label>
+                    <select class="form-control" id="langageInput" name="langage" required>
+                        {% for langage in differentsLangages %}
+                            <option value="{{ langage }}">{{ langage }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="contactInput">Contact</label>
+                    <input type="email" class="form-control" id="contactInput" name="contact" required>
+                </div>
+                <div class="text-center">
+                    <button type="button" class="btn btn-primary" id="addJobBtn" onclick="postNewJobOffer()">Ajouter</button>
+                </div>
+            </form>
+        </div>
+
+
+
+
+        <div class="col-lg-7 col-12" style="overflow-y:scroll; max-height: 80vh" >
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Location</th>
+                <th scope="col">Language</th>
+                <th scope="col">Contact</th>
+                <th scope="col">Date de publication</th>
+                <th scope="col">Action</th>
+            </tr>
+        </thead>
+        <tbody id="CorpsTableauJobs" style="overflow-y:scroll">
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="{{ asset('scripts/admin.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+
+    
+        
+       
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
