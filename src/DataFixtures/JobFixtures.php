@@ -20,6 +20,29 @@ class JobFixtures extends Fixture
             'PHP', 'PYTHON', 'JAVA', 'RUBY', 'C#' // Back-end
         ];
 
+        $contacts = [
+            "Capgemini",
+            "Dassault Systèmes",
+            "Atos",
+            "Thales Group",
+            "OVHcloud",
+            "Ubisoft",
+            "Altran Technologies",
+            "Worldline",
+            "Bull",
+            "Sopra Steria",
+            "Soitec",
+            "CGG",
+            "Gemalto",
+            "STMicroelectronics",
+            "Ekinops",
+            "Inside Secure",
+            "Netatmo",
+            "Parrot",
+            "Orange",
+            "Free (Iliad)"
+        ];
+
         $LoremIpsum='Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, 
         eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. 
         Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, 
@@ -38,7 +61,7 @@ class JobFixtures extends Fixture
                 ->setLocalisation($villes[$i % count($villes)])
                 ->setDescription($RandomDescription)
                 ->setLangage($langages[array_rand($langages)])
-                ->setContact('contact' . $i . '@example.com')
+                ->setContact($contacts[array_rand($contacts)].' '.$villes[$i % count($villes)])
                 ->setCreatedAt($this->getRandomDate());
 
             $manager->persist($job);

@@ -69,9 +69,8 @@ class JobController extends AbstractController
         SerializerInterface $serializer
     ): Response {
         try {
-            $langage = $request->query->get('langage', ''); // default to empty string if not set
-            $localisation = $request->query->get('localisation', ''); // default to empty string if not set
-            
+            $langage = $request->query->get('langage', ''); 
+            $localisation = $request->query->get('localisation', ''); 
 
             $jobs = $jobRepository->searchUsingLocalisationAndOrJob($langage, $localisation);
             $serializedJobs = $serializer->serialize($jobs, 'json', ['attributes' => [
@@ -84,8 +83,6 @@ class JobController extends AbstractController
                 'createdAt'
             ]]);
             return new JsonResponse($serializedJobs, JsonResponse::HTTP_OK, [], true);
-            
-            
         } catch (\Exception $erreur) {
             return new JsonResponse([
                 'success' => false,
@@ -93,4 +90,6 @@ class JobController extends AbstractController
             ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
         }
     }
+
+    
 }

@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Document\job;
 use MongoDB\Collection;
 use Doctrine\ODM\MongoDB\DocumentManager;
+use phpDocumentor\Reflection\Types\Integer;
 use phpDocumentor\Reflection\Types\Iterable_;
 
 class JobRepository
@@ -105,6 +106,10 @@ class JobRepository
         
     }
 
+    public function getJob(string $id): ?Job
+    {
+        return $this->repository->find($id);
+    }
 
     
 

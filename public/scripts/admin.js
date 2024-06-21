@@ -45,7 +45,7 @@ async function searchJobs() {
             }
         });
         let data = await response.json();
-        RemplirTableau(data);
+        RemplirTableauJobs(data);
         
     } catch (error) {
         console.error('Une erreur a eu lieu : ', error);
@@ -53,7 +53,7 @@ async function searchJobs() {
 }
 
 
-function RemplirTableau(data){
+function RemplirTableauJobs(data){
     const Tableau = document.querySelector('#CorpsTableauJobs');
     Tableau.innerHTML = '';
     data.forEach(job => {
@@ -64,7 +64,12 @@ function RemplirTableau(data){
             <td>${job.langage}</td>
             <td>${job.contact}</td>
             <td>${toYMD(job.createdAt)}</td>
-           <td><button type="button" class="btn btn-danger" onclick="deleteJobOffer('${job.id}')">Delete</button></td>
+            <td>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-danger" onclick="deleteJobOffer('${job.id}')">X</button>
+                <a class="btn btn-primary" href="/admin/jobs/edit/${job.id}">Modifier</a>
+            </div>
+            </td>
             
         `;
         Tableau.appendChild(row);
@@ -78,13 +83,6 @@ function toYMD(date){
     return `${dateObj.getFullYear()}-${dateObj.getMonth()+1}-${dateObj.getDate()}`;
 }
 
-
-
-
-
-
-
-
 function HideAll(){
     const toHide = document.querySelectorAll('.showHide');
     toHide.forEach(item=>{
@@ -92,9 +90,6 @@ function HideAll(){
     });
 
 }
-
-
-
 
 async function deleteJobOffer(id){
     const myHeaders = new Headers();
@@ -127,7 +122,8 @@ async function postNewJobOffer(){
             name: dataform.get('name'),
             localisation: dataform.get('localisation'),
             langage: dataform.get('langage'),
-            contact: dataform.get('contact')
+            contact: dataform.get('contact'),
+            description: dataform.get('description')
         }
     );
 
@@ -143,7 +139,7 @@ async function postNewJobOffer(){
         if(response.ok){
             searchJobs();
         } else {
-            window.location.href="/"
+            alert('Une erreur est survenue lors de l\'ajout de l\'offre d\'emploi. Verfiiez que tous les champs sont remplis, si l\'erreur persiste, contactez l\'administrateur.');
         }
     } catch (erreur) {
         console.error('Une erreur a eu lieu : ', erreur);

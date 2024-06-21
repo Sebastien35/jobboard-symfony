@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Modification {{ job.name }}{% endblock %}
+
+{% block body %}
+{% if job %}
+    <h1>Modification de l'offre {{ job.name }}</h1>
+    <div class="container">
+    <form id="jobEditForm">
+        <div class="form-group" >
+            <label for="name">Nom de l'offre</label>
+            <input type="text" class="form-control" id="name" name="name" value="{{ job.name }}">
+        </div>
+        <div class="form-group">
+            <label for="location">Lieu</label>
+            <input type="text" class="form-control" id="localisation" name="localisation" value="{{ job.localisation }}">
+        </div>
+        <div class="form-group">
+            <label for="langage">Langage</label>
+            <input type="text" class="form-control" id="langage" name="langage" value="{{ job.langage }}">
+        </div>
+        <div class="form-group">
+            <label for="contact">Contact</label>
+            <input type="email" class="form-control" id="contact" name="contact" value="{{ job.contact }}">
+        </div>
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea class="form-control" id="description" name="description">{{ job.description }}</textarea>
+        </div>
+        <div class="text-center">
+            <button type="button" class="btn btn-primary" id="editJobBtn" onClick="editJob('{{ job.id }}')">Modifier</button>
+            <button type="button" class="btn btn-danger" id="deleteJobBtn" onClick="deleteJob('{{ job.id }}')">Supprimer</button>
+            <a href="{{ path('app_admin_index') }}" class="btn btn-secondary">Retour</a>
+        </div>
+    </form>
+    </div>
+{% else %}
+    <div class="alert alert-danger" role="alert">
+        Aucune offre ne correspond à cet identifiant
+    </div>
+{% endif %}
+<script src="{{ asset('scripts/adminEditJob.js') }}"></script>
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}

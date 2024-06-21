@@ -20,7 +20,12 @@ use Symfony\Component\Messenger\Transport\Serialization\SerializerInterface;
 class AdminController extends AbstractController
 {   
     public function __construct(
-    ) {}
+        private DocumentManager $documentManager,
+        private LoggerInterface $logger
+    ) {
+        $this->documentManager = $documentManager;
+        $this->logger = $logger;
+    }
 
 
     #[Route('/', name: 'index')]
@@ -45,38 +50,38 @@ class AdminController extends AbstractController
     ): Response
     {   
         try{
-        $jobRepository->deleteJob($id);
-        return $this->redirectToRoute('app_admin_index');
+        $job = $jobRepository->getJob($id);
+        if (!$job) {
+            return new Response('Job non trouvé', 404);
+        }
+        $this->$jobRepository->deleteJob($job);
+        return new Response(204);
         } catch (\Exception $e) {
-            return $this->redirectToRoute('app_admin_index');
+            return new Response('Erreur lors de la suppression', 500);
         }
     }
 
     #[Route('/jobs/new', name: 'new_job', methods: ['POST'])]
-    public function newJob(
-        JobRepository $jobRepository,
-        Request $request,
-        DocumentManager $documentManager,
-        LoggerInterface $logger
-    ): Response
+    public function newJob( Request $request): Response
     {
         try{
-        
         $JobToSave = new Job();
         $data=json_decode($request->getContent(), true);
+        if(empty($data['name']) || empty($data['localisation']) 
+        || empty($data['description']) || empty($data['langage']) 
+        || empty($data['contact']))
+        {
+            return new Response('Tous les champs sont obligatoires', 400);
+        }
         $JobToSave
-            ->setName($data['name'])
-            ->setLocalisation($data['localisation'])
-            ->setDescription($data['description'])
-            ->setLangage($data['langage'])
-            ->setContact($data['contact'])
+            ->setName(htmlspecialchars($data['name']))
+            ->setLocalisation(htmlspecialchars($data['localisation']))
+            ->setDescription(htmlspecialchars($data['description']))
+            ->setLangage(htmlspecialchars($data['langage']))
+            ->setContact(htmlspecialchars($data['contact']))
             ->setCreatedAt(new \DateTime());
-
-        dd($JobToSave);
-        $documentManager->persist($JobToSave);
-        $documentManager->flush();
-        $logger->info('Job persisted successfully: ' . json_encode($JobToSave));
-
+        $this->documentManager->persist($JobToSave);
+        $this->documentManager->flush();
         return new JsonResponse(['success' => true]);
         } catch (\Exception $erreur) {
             return $this->render('error/500.html.twig', [
@@ -84,6 +89,46 @@ class AdminController extends AbstractController
                 'error' => $erreur
             ]);
 
+        }
+    }
+
+    #[Route('/jobs/edit/{id}', name: 'edit_job', methods: ['GET','PUT'])]
+    public function editJob(
+        JobRepository $jobRepository,
+        Request $request,
+        String $id
+    ): Response
+    {   
+        if ($request->isMethod('GET')) {
+            $job = $jobRepository->getJob($id);
+            return $this->render('admin/editJob.html.twig', [
+                'job' => $job
+            ]);
+        } 
+        try{
+        $job = $jobRepository->getJob($id);
+        $data=json_decode($request->getContent(), true);
+        if(empty($data['name']) || empty($data['localisation']) 
+        || empty($data['description']) || empty($data['langage']) 
+        || empty($data['contact']))
+        {
+            return new Response('Tous les champs sont obligatoires', 400);
+        }
+        $job
+            ->setName(htmlspecialchars($data['name']))
+            ->setLocalisation(htmlspecialchars($data['localisation']))
+            ->setDescription(htmlspecialchars($data['description']))
+            ->setLangage(htmlspecialchars($data['langage']))
+            ->setContact(htmlspecialchars($data['contact']))
+            ->setUpdatedAt(new \DateTime());
+        
+        $this->documentManager->flush();
+        return new JsonResponse(['success' => true]);
+        } catch (\Exception $erreur) {
+            return $this->render('error/500.html.twig', [
+                'controller_name' => 'AdminController',
+                'error' => $erreur
+            ]);
         }
     }
 }
